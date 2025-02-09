@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Gastos</title>
+</head>
+<body>
+    <h1>Dashboard de Gastos</h1>
+    
+    <h2>Receitas</h2>
+    <ul>
+        {% for categoria, valor in dados['RECEITAS'].items() %}
+            <li>{{ categoria }}: R$ {{ valor }}</li>
+        {% endfor %}
+    </ul>
+    
+    <h2>Despesas Fixas</h2>
+    <ul>
+        {% for categoria, valor in dados['DESPESAS FIXAS'].items() %}
+            <li>{{ categoria }}: R$ {{ valor }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Total de Receitas: R$ {{ total_receitas }}</h2>
+    <h2>Total de Despesas Fixas: R$ {{ total_despesas_fixas }}</h2>
+    <h2>Saldo: R$ {{ saldo }}</h2>
+</body>
+</html>

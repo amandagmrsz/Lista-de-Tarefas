@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/dash/">Investimentos</a></li>
+                <li><a href="/holerite">Holerite</a></li>
+                <li><a href="/gastos">Monitoramento de Gastos</a></li>
+            </ul>
+        </nav>
+
+        <div id="img-homepage">
+            <img src="{{ url_for('static', filename='images/homepage.jpg') }}" alt="Imagem da Página Inicial">
+            <h1>Bem-vindo à Página Inicial</h1>
+        </div>
+        
+        <section class="page-section" id="beneficios">
+            <div class="container">
+                <div class="text-center">
+                    <h2 class="section-heading text-uppercase">Planejamento e Controle Financeiro</h2>
+                    <h3 class="section-subheading text-muted" id="frase">Investimento não é uma mágica; é um comportamento com disciplina.</h3>
+                </div>
+                <div class="row text-center">
+                    <!-- Investimentos -->
+                    <div class="col-md-4">
+                        <span class="fa-stack fa-4x" id="icon">
+                            <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                            <img src="{{ url_for('static', filename='images/investimento.png') }}" class="fa-stack-1x custom-icon" alt="Ícone de Investimentos">
+                        </span>
+                        <h4 class="my-3">Investimentos</h4>
+                        <p style="text-align: justify;">Investir de forma estratégica é essencial para garantir o crescimento financeiro e a segurança futura. 
+                            Seja em aplicações como ações, renda fixa ou previdência privada, é importante diversificar os investimentos para equilibrar riscos e retornos. 
+                            Uma gestão eficiente permite identificar as melhores oportunidades e maximizar os resultados. 
+                            Além disso, o acompanhamento constante dos rendimentos ajuda a ajustar a carteira conforme as mudanças no mercado, garantindo que o planejamento 
+                            financeiro esteja sempre alinhado aos objetivos de longo prazo.</p>
+                    </div>
+        
+                    <!-- Holerite -->
+                    <div class="col-md-4" >
+                        <span class="fa-stack fa-4x" id="icon">
+                            <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                            <img src="{{ url_for('static', filename='images/holerite.png') }}" class="fa-stack-1x custom-icon" alt="Ícone de Holerite">
+                        </span>
+                        <h4 class="my-3">Holerite</h4>
+                        <p style="text-align: justify;">O holerite, também conhecido como contracheque, é um documento fundamental para a relação entre empregador e empregado.
+                             Ele detalha os valores recebidos pelo trabalhador, incluindo salário, bônus e benefícios, assim como os descontos, 
+                             como impostos e contribuições previdenciárias. Além de ser uma obrigação legal, o holerite oferece transparência, 
+                             permitindo que o colaborador acompanhe sua remuneração de forma clara e organizada. 
+                            A digitalização desse processo tem se tornado comum, trazendo praticidade tanto para empresas quanto para funcionários.</p>
+                    </div>
+        
+                    <!-- Monitoramento de Gastos -->
+                    <div class="col-md-4">
+                        <span class="fa-stack fa-4x" id="icon">
+                            <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                            <img src="{{ url_for('static', filename='images/gastos.png') }}" class="fa-stack-1x custom-icon" alt="Ícone de Monitoramento de Gastos">
+                        </span>
+                        <h4 class="my-3">Monitoramento de Gastos</h4>
+                        <p style="text-align: justify;">O monitoramento de gastos é uma prática indispensável para manter o controle financeiro, 
+                            tanto no âmbito pessoal quanto empresarial. Ele permite identificar onde o dinheiro está sendo aplicado e 
+                            encontrar oportunidades de economia. Com o uso de ferramentas tecnológicas, é possível categorizar despesas, 
+                            acompanhar tendências de consumo e planejar um orçamento mais eficiente. Essa organização não apenas evita desperdícios, 
+                            mas também contribui para a tomada de decisões mais conscientes e alinhadas aos objetivos financeiros.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="page-section bg-light" id="solutions">
+            <div class="container">
+                <div class="text-center">
+                    <h2 class="section-heading text-uppercase">Soluções</h2>
+                    <h3 class="section-subheading text-muted">Tecnologia aplicada à gestão de operações.</h3>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 col-sm-6 mb-4">
+                        <!-- solutions item 1-->
+                        <div class="solutions-item">
+                            <a class="solutions-link" data-bs-toggle="modal" href="#solutionsModal1">
+                                <div class="solutions-hover">
+                                    <div class="solutions-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                                </div>
+                                <img class="img-fluid" src="{{ url_for('static', filename='images/investimento.jpg') }}" alt="..." />
+                            </a>
+                            <div class="solutions-caption">
+                                <div class="solutions-caption-heading">Investimento</div>
+                                <div class="solutions-caption-subheading text-muted"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6 mb-4">
+                        <!-- solutions item 2-->
+                        <div class="solutions-item">
+                            <a class="solutions-link" data-bs-toggle="modal" href="#solutionsModal2">
+                                <div class="solutions-hover">
+                                    <div class="solutions-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                                </div>
+                                <img class="img-fluid" src="{{ url_for('static', filename='images/investimento.jpg') }}" alt="..." />
+                            </a>
+                            <div class="solutions-caption">
+                                <div class="solutions-caption-heading">Holerite</div>
+                                <!--
+                                <div class="solutions-caption-subheading text-muted">Graphic Design</div>
+                                -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6 mb-4">
+                        <!-- solutions item 3-->
+                        <div class="solutions-item">
+                            <a class="solutions-link" data-bs-toggle="modal" href="#solutionsModal3">
+                                <div class="solutions-hover">
+                                    <div class="solutions-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                                </div>
+                                <img class="img-fluid" src="{{ url_for('static', filename='images/investimento.jpg') }}" alt="..." />
+                            </a>
+                            <div class="solutions-caption">
+                                <div class="solutions-caption-heading">Monitoramento de Gastos</div>
+                                <div class="solutions-caption-subheading text-muted"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6 mb-4 mb-lg-0">                   
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- solutions item 1 modal popup-->
+<div class="solutions-modal modal fade" id="solutionsModal1" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="close-modal" data-bs-dismiss="modal"><img src="{{ url_for('static', filename='images/close-icon.svg') }}" id="close" alt="Close modal" /></div>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="modal-body">
+                            <!-- Project details-->
+                            <h2 class="text-uppercase">Investimento</h2>
+                            <p class="item-intro text-muted"></p>
+                            <img class="img-fluid d-block mx-auto" src="{{ url_for('static', filename='img/solutions/1.jpg') }}"  alt="Imagem de um sistema de rastreamento de transporte ferroviário" />
+                            <p style="text-align: left;">
+                                .........
+                            </p>
+                            <ul class="list-inline">
+                                <li>oi</li>
+                                <li>oi</li>
+                                <li>oi</li>
+                                <li>oi</li>
+                            </ul>
+                            <button class="btn btn-primary btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
+                                <i class="fas fa-xmark me-1"></i>
+                                Fechar Janela
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- solutions item 2 modal popup-->
+<div class="solutions-modal modal fade" id="solutionsModal2" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="close-modal" data-bs-dismiss="modal"><img src="{{ url_for('static', filename='images/close-icon.svg') }}" id="close" alt="Close modal" /></div>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="modal-body">
+                            <!-- Project details-->
+                            <h2 class="text-uppercase">Monitoramento e Rastreador para Caminhão</h2>
+                            <p class="item-intro text-muted"> .... </p>
+                            <img class="img-fluid d-block mx-auto" src="{{ url_for('static', filename='img/solutions/2.jpg') }}" alt="Imagem de monitoramento e rastreamento de caminhão" />
+                            <p style="text-align: left;">
+                                investimento 2
+                            </p>
+                            <ul class="list-inline">
+                                <li>oi</li>
+                                <li>oi</li>
+                                <li>oi</li>
+                                <li>oi</li>
+                            </ul>
+                            <button class="btn btn-primary btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
+                                <i class="fas fa-xmark me-1"></i>
+                                Fechar Janela
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- solutions item 3 modal popup-->
+<div class="solutions-modal modal fade" id="solutionsModal3" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="close-modal" data-bs-dismiss="modal"><img src="{{ url_for('static', filename='images/close-icon.svg') }}" id="close" alt="Close modal" /></div>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="modal-body">
+                            <!-- Project details-->
+                            <h2 class="text-uppercase">Desafios da Gestão de Frotas na Mineração</h2>
+                            <p class="item-intro text-muted"></p>
+                            <img class="img-fluid d-block mx-auto" src="{{ url_for('static', filename='img/solutions/3.jpg') }}" alt="..." />
+                            <p style="text-align: left;">
+                                investimento 3
+                            </p>
+                            <ul class="list-inline">
+                                <li>oi</li>
+                                <li>oi</li>
+                                <li>oi</li>
+                                <li>oi</li>
+                            </ul>
+                            <button class="btn btn-primary btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
+                                <i class="fas fa-xmark me-1"></i>
+                                Fechar Janela
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="page-section" id="beneficios">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="section-heading text-uppercase">Sobre Nós</h2>
+            <h3 class="section-subheading text-muted" id="frase">"O sucesso depende de nosso poder de ver o que os outros não veem." - Albert Einstein</h3>
+        </div>
+        <div class="row text-center">
+            <!-- Amanda -->
+            <div class="col-md-4">
+                <span class="fa-stack fa-4x">
+                    <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                    <img src="{{ url_for('static', filename='images/Amanda.jpg') }}" class="fa-stack-1x" id="foto-amanda">
+                </span>
+                <h4 class="my-3">Amanda Guimarães</h4>
+                <p style="text-align: justify;">
+                    Amanda Guimarães é estudante de Ciência da Computação, apaixonada por tecnologia e desenvolvimento em geral. 
+                    Interessada em criar soluções inovadoras, ela explora áreas como desenvolvimento de sistemas, automação e aplicativos.
+                    Com facilidade para aprender novas tecnologias, Amanda busca projetos que unam prática e impacto, sempre focada em contribuir para o avanço tecnológico.<br><br>
+                </p>
+                <div class="mt-3">
+                    <a href="https://www.linkedin.com/in/amanda-beatriz-guimarães-alves-8308b625a/" class="btn btn-primary btn-sm me-2" target="_blank">
+                        <i class="fab fa-linkedin"></i> LinkedIn
+                    </a>
+                    <a href="https://github.com/amandagmrsz" class="btn btn-dark btn-sm" target="_blank">
+                        <i class="fab fa-github"></i> GitHub
+                    </a>
+                </div>
+            </div>
+            <!-- Mateus -->
+            <div class="col-md-4">
+                <span class="fa-stack fa-4x">
+                    <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                    <img src="{{ url_for('static', filename='images/Mateus.png') }}" class="fa-stack-1x" id="foto-amanda">
+                </span>
+                <h4 class="my-3">Mateus Mussi</h4>
+                <p style="text-align: justify;">Mateus é estudante de Ciência da Computação, com ampla experiência em outras áreas e paixão por tecnologia.
+                     Ele une sua vivência profissional às novas habilidades em desenvolvimento de software, análise de dados e computação em nuvem, destacando-se 
+                     pela disciplina e pela capacidade de resolver problemas com uma abordagem prática e estratégica.</p>
+                <div class="mt-3">
+                    <a href="https://www.linkedin.com/in/mateus-mussi/" class="btn btn-primary btn-sm me-2" target="_blank">
+                        <i class="fab fa-linkedin"></i> LinkedIn
+                    </a>
+                    <a href="https://github.com/mateus-mussi" class="btn btn-dark btn-sm" target="_blank">
+                        <i class="fab fa-github"></i> GitHub
+                    </a>
+                </div>
+            </div>
+            <!-- Clarice -->
+            <div class="col-md-4">
+                <span class="fa-stack fa-4x">
+                    <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                    <img src="{{ url_for('static', filename='images/Clarice.jpg') }}" class="fa-stack-1x" id="foto-amanda">
+                </span>
+                <h4 class="my-3">Clarice Antezana</h4>
+                <p style="text-align: justify;">Clarice é estudante de Ciência da Computação, com experiência em gestão e negócios e o desejo de reinventar sua carreira.
+                     Com interesse em Inteligência Artificial, Big Data e automação, ela combina sua vivência multidisciplinar com novas habilidades para criar soluções 
+                     inovadoras e integrar tecnologia ao ambiente corporativo.</p>
+                <div class="mt-3">
+                    <a href="https://www.linkedin.com/in/clarice-antezana/" class="btn btn-primary btn-sm me-2" target="_blank">
+                        <i class="fab fa-linkedin"></i> LinkedIn
+                    </a>
+                    <a href="https://github.com/clarice-antezana" class="btn btn-dark btn-sm" target="_blank">
+                        <i class="fab fa-github"></i> GitHub
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<footer class="footer bg-dark text-white" >
+    <div class="container">
+      <div class="row mt-3">
+        <div class="col text-center">
+          <p>&copy; Copyright ©2024 Todos os direitos reservados | by Ämanda Guimarães | Mateus Mussi | Clarice Antezana</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

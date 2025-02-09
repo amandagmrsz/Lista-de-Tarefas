@@ -1,0 +1,233 @@
+body{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+nav {
+    background-color: #212529;
+    padding: 0;
+    top: 0; /* Define a posição no topo */
+    width: 100%; /* Faz a barra ocupar toda a largura da tela */
+}
+
+/* Estilo da lista */
+nav ul {
+    display: flex;
+    list-style: none;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
+/* Estilo dos itens da lista */
+nav ul li {
+    margin: 0;
+}
+
+/* Estilo dos links */
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    display: block;
+}
+
+/* Hover para os links */
+nav ul li a:hover {
+    background-color: #0d6efd;
+    border-radius: 4px;
+}
+
+#img-homepage {
+    position: relative; /* Permite posicionar elementos dentro do contêiner */
+    width: 100%;
+    height: auto;
+}
+
+#img-homepage img {
+    width: 100%;
+    height: 70vh;
+    display: block;
+}
+
+#img-homepage h1 {
+    position: absolute; /* Posiciona o texto sobre a imagem */
+    top: 50%; /* Centraliza verticalmente */
+    left: 20%; /* Centraliza horizontalmente */
+    transform: translate(-50%, -50%); /* Ajusta para o centro exato */
+    color: white; /* Define a cor do texto */
+    font-size: 3rem; /* Ajusta o tamanho do texto */
+    text-shadow: 3px 3px 5px #0d6efd; /* Adiciona sombra ao texto para maior legibilidade */
+    margin: 0;
+}
+
+#beneficios {
+    margin-top: 50px; /* Aumenta a distância acima da seção */
+    margin-bottom: 50px;
+}
+
+#frase {
+    margin-top: 20px; /* Ajusta a margem superior */
+    margin-bottom: 30px; /*  Ajusta a margem inferior */
+}
+
+#solutions-txt{
+    margin-top: 50px;
+    
+}
+
+.section-heading {
+    margin-top: 30px; /* Espaço acima do título */
+    margin-bottom: 15px; /* Espaço abaixo do título */
+}
+.page-section {
+    padding-bottom: 50px; /* Espaço no final da seção */
+}
+
+.custom-icon {
+    width: 40%; /* Ajuste o tamanho do ícone em relação à bolinha */
+    height: auto; /* Mantém a proporção do ícone */
+    position: absolute; /* Garante o alinhamento */
+    top: 5%; /* Centraliza verticalmente */
+    left: 5%; /* Centraliza horizontalmente */
+}
+
+.custom-foto {
+    width: 40%; /* Ajuste o tamanho do ícone em relação à bolinha */
+    height: auto; /* Mantém a proporção do ícone */
+    position: absolute; /* Garante o alinhamento */
+    top: 5%; /* Centraliza verticalmente */
+    left: 5%; /* Centraliza horizontalmente */
+}
+
+#icon img {
+    filter: brightness(0) invert(1);
+}
+
+#foto-amanda {
+    width: 80%;
+    height: 100%;
+    object-fit: cover; /* Ajusta a imagem para cobrir a área sem distorcer */
+    border-radius: 50%; /* Faz a imagem ficar redonda */
+}
+
+#foto-mateus {
+    width: 80%;
+    height: 100%;
+    object-fit: cover; /* Ajusta a imagem para cobrir a área sem distorcer */
+    border-radius: 50%; /* Faz a imagem ficar redonda */
+}
+
+#foto-clarice {
+    width: 80%;
+    height: 100%;
+    object-fit: cover; /* Ajusta a imagem para cobrir a área sem distorcer */
+    border-radius: 50%; /* Faz a imagem ficar redonda */
+}
+
+.fa-3x {
+    font-size: 3em;
+}
+
+#solutions .solutions-item {
+    max-width: 26rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  #solutions .solutions-item .solutions-link {
+    position: relative;
+    display: block;
+    margin: 0 auto;
+  }
+  #solutions .solutions-item .solutions-link .solutions-hover {
+    display: flex;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #0d6efd;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity ease-in-out 0.25s;
+  }
+  #solutions .solutions-item .solutions-link .solutions-hover .solutions-hover-content {
+    font-size: 1.25rem;
+    color: white;
+  }
+  #solutions .solutions-item .solutions-link:hover .solutions-hover {
+    opacity: 1;
+  }
+  #solutions .solutions-item .solutions-caption {
+    padding: 1.5rem;
+    text-align: center;
+    background-color: #fff;
+  }
+  #solutions .solutions-item .solutions-caption .solutions-caption-heading {
+    font-size: 1.5rem;
+    font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-weight: 700;
+    margin-bottom: 0;
+  }
+  #solutions .solutions-item .solutions-caption .solutions-caption-subheading {
+    font-style: italic;
+    font-family: "Roboto Slab", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  }
+  
+  .solutions-modal .modal-dialog {
+    margin: 1rem;
+    max-width: 100vw;
+  }
+  .solutions-modal .modal-content {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+    text-align: center;
+  }
+  .solutions-modal .modal-content h2, .solutions-modal .modal-content .h2 {
+    font-size: 3rem;
+    line-height: 3rem;
+  }
+  .solutions-modal .modal-content p.item-intro {
+    font-style: italic;
+    margin-bottom: 2rem;
+    font-family: "Roboto Slab", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  }
+  .solutions-modal .modal-content p {
+    margin-bottom: 2rem;
+  }
+  .solutions-modal .modal-content ul.list-inline {
+    margin-bottom: 2rem;
+  }
+  .solutions-modal .modal-content img {
+    margin-bottom: 2rem;
+  }
+  .solutions-modal .close-modal {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    width: 3rem;
+    height: 3rem;
+    cursor: pointer;
+    background-color: transparent;
+  }
+  .solutions-modal .close-modal:hover {
+    opacity: 0.3;
+  }
+
+.footer {
+    background: #212529;
+    color: white;
+    bottom: 0;
+    width: 100%;
+}
+/* Usando flexbox para garantir que o footer fique na parte inferior */
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+/* O conteúdo principal ocupará o espaço restante */
+main {
+    flex: 1;
+}

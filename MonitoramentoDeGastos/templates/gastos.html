@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoramento de Gastos</title>
+    <style>
+        /* Estilo Global */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .form-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 2000px; /* Tamanho maior */
+            margin: 20px;
+            overflow-x: auto; /* Para rolagem horizontal se necessário */
+        }
+
+        h1 {
+            text-align: center;
+            color: #0d6efd;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #0d6efd;
+            font-size: 1.2rem;
+            margin-top: 20px;
+        }
+
+        /* Tabela */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table th, table td {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #ddd;
+            word-wrap: break-word; /* Quebra de linha em células */
+        }
+
+        table th {
+            background-color: #0d6efd;
+            color: white;
+        }
+
+        /* Estilo dos campos de entrada */
+        input[type="number"] {
+            width: 100%; /* Preenche toda a largura da célula */
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+        }
+
+        input[type="number"]:focus {
+            border-color: #0d6efd;
+            outline: none;
+            box-shadow: 0 0 8px #0d6efd;
+        }
+
+        .parcelado-container {
+            margin: 10px 0;
+        }
+
+        .parcelado-container label {
+            margin-bottom: 5px;
+        }
+
+        /* Estilo do botão */
+        button {
+            background-color: #0d6efd;
+            color: white;
+            padding: 10px 20px; /* Ajustado para deixar o botão menor */
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            width: auto; /* Deixa o botão com o tamanho adequado */
+            margin: 20px auto;
+            display: block;
+        }
+
+        button:hover {
+            background-color: #0d6efd;
+        }
+
+        button:active {
+            background-color: #0d6efd;
+        }
+        .center-button {
+        text-align: center;
+        margin-top: 20px;
+    }
+    .center-button button {
+        display: inline-block;
+        margin: 0 auto;
+    }
+
+    .vertical-text {
+    writing-mode: vertical-rl; /* Texto na vertical, da direita para a esquerda */
+    transform: rotate(180deg); /* Corrige a direção, se necessário */
+    text-align: center; /* Centraliza o texto horizontalmente */
+    vertical-align: middle; /* Centraliza o texto verticalmente */
+    background-color: #007BFF; /* Cor de fundo */
+    color: white; /* Cor do texto */
+    padding: 10px; /* Adiciona espaçamento interno */
+    font-weight: bold; /* Destaca o texto */
+    height: 100%; /* Garante que ocupe a altura completa da célula */
+}
+
+    </style>
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/dash/">Investimentos</a></li>
+                <li><a href="/holerite">Holerite</a></li>
+                <li><a href="/gastos">Monitoramento de Gastos</a></li>
+            </ul>
+        </nav>
+
+
+        <div class="form-container">
+            <h1>Cadastro de Finanças Pessoais</h1>
+
+<form method="POST" action="{{ url_for('salvar_receitas') }}">
+        
+  <!-- Tabela de Finanças -->
+<table>
+    <thead>
+        <tr>
+            <th>Categoria</th>
+            <th>Janeiro</th>
+            <th>Fevereiro</th>
+            <th>Março</th>
+            <th>Abril</th>
+            <th>Maio</th>
+            <th>Junho</th>
+            <th>Julho</th>
+            <th>Agosto</th>
+            <th>Setembro</th>
+            <th>Outubro</th>
+            <th>Novembro</th>
+            <th>Dezembro</th>
+        </tr>
+    </thead>
+    <tbody>
+        <table>
+            <tr>
+                <th rowspan="8" class="vertical-text">Receitas</th> <!-- Isso faz com que "Receitas" ocupe todas as linhas dessa coluna -->
+                <td>Salário</td>
+                <td><input type="number"  name="salario_jan" step="0.01"></td>
+                <td><input type="number"  name="salario_fev" step="0.01"></td>
+                <td><input type="number"  name="salario_mar" step="0.01"></td>
+                <td><input type="number"  name="salario_abr" step="0.01"></td>
+                <td><input type="number"  name="salario_mai" step="0.01"></td>
+                <td><input type="number"  name="salario_jun" step="0.01"></td>
+                <td><input type="number"  name="salario_jul" step="0.01"></td>
+                <td><input type="number"  name="salario_ago" step="0.01"></td>
+                <td><input type="number"  name="salario_set" step="0.01"></td>
+                <td><input type="number"  name="salario_out" step="0.01"></td>
+                <td><input type="number"  name="salario_nov" step="0.01"></td>
+                <td><input type="number"  name="salario_dez" step="0.01"></td>
+            </tr>
+            <tr>
+                <td>Aluguel</td>
+                <td><input type="number"  name="aluguel_jan" step="0.01"></td>
+                <td><input type="number"  name="aluguel_fev" step="0.01"></td>
+                <td><input type="number"  name="aluguel_mar" step="0.01"></td>
+                <td><input type="number"  name="aluguel_abr" step="0.01"></td>
+                <td><input type="number"  name="aluguel_mai" step="0.01"></td>
+                <td><input type="number"  name="aluguel_jun" step="0.01"></td>
+                <td><input type="number"  name="aluguel_jul" step="0.01"></td>
+                <td><input type="number"  name="aluguel_ago" step="0.01"></td>
+                <td><input type="number"  name="aluguel_set" step="0.01"></td>
+                <td><input type="number"  name="aluguel_out" step="0.01"></td>
+                <td><input type="number"  name="aluguel_nov" step="0.01"></td>
+                <td><input type="number"  name="aluguel_dez" step="0.01"></td>
+            </tr>
+            <tr>
+                <td>Pensão</td>
+                <td><input type="number"  name="pensao_jan" step="0.01"></td>
+                <td><input type="number"  name="pensao_fev" step="0.01"></td>
+                <td><input type="number"  name="pensao_mar" step="0.01"></td>
+                <td><input type="number"  name="pensao_abr" step="0.01"></td>
+                <td><input type="number"  name="pensao_mai" step="0.01"></td>
+                <td><input type="number"  name="pensao_jun" step="0.01"></td>
+                <td><input type="number"  name="pensao_jul" step="0.01"></td>
+                <td><input type="number"  name="pensao_ago" step="0.01"></td>
+                <td><input type="number"  name="pensao_set" step="0.01"></td>
+                <td><input type="number"  name="pensao_out" step="0.01"></td>
+                <td><input type="number"  name="pensao_nov" step="0.01"></td>
+                <td><input type="number"  name="pensao_dez" step="0.01"></td>
+            </tr>
+            <tr>
+                <td>Horas Extras</td>
+                <td><input type="number"  name="horas_extra_jan" step="0.01"></td>
+                <td><input type="number"  name="horas_extra_fev" step="0.01"></td>
+                <td><input type="number"  name="horas_extra_mar" step="0.01"></td>
+                <td><input type="number"  name="horas_extra_abr" step="0.01"></td>
+                <td><input type="number"  name="horas_extra_mai" step="0.01"></td>
+                <td><input type="number"  name="horas_extra_jun" step="0.01"></td>
+                <td><input type="number"  name="horas_extra_jul" step="0.01"></td>
+                <td><input type="number"  name="horas_extra_ago" step="0.01"></td>
+                <td><input type="number"  name="horas_extra_set" step="0.01"></td>
+                <td><input type="number"  name="horas_extra_out" step="0.01"></td>
+                <td><input type="number"  name="horas_extra_nov" step="0.01"></td>
+                <td><input type="number"  name="horas_extra_dez" step="0.01"></td>
+            </tr>
+            <tr>
+                <td>13º Salário</td>
+                <td><input type="number"  name="decimo_terceiro_jan" step="0.01"></td>
+                <td><input type="number"  name="decimo_terceiro_fev" step="0.01"></td>
+                <td><input type="number"  name="decimo_terceiro_mar" step="0.01"></td>
+                <td><input type="number"  name="decimo_terceiro_abr" step="0.01"></td>
+                <td><input type="number"  name="decimo_terceiro_mai" step="0.01"></td>
+                <td><input type="number"  name="decimo_terceiro_jun" step="0.01"></td>
+                <td><input type="number"  name="decimo_terceiro_jul" step="0.01"></td>
+                <td><input type="number"  name="decimo_terceiro_ago" step="0.01"></td>
+                <td><input type="number"  name="decimo_terceiro_set" step="0.01"></td>
+                <td><input type="number"  name="decimo_terceiro_out" step="0.01"></td>
+                <td><input type="number"  name="decimo_terceiro_nov" step="0.01"></td>
+                <td><input type="number"  name="decimo_terceiro_dez" step="0.01"></td>
+            </tr>
+            <tr>
+                <td>Férias</td>
+                <td><input type="number"  name="ferias_jan" step="0.01"></td>
+                <td><input type="number"  name="ferias_fev" step="0.01"></td>
+                <td><input type="number"  name="ferias_mar" step="0.01"></td>
+                <td><input type="number"  name="ferias_abr" step="0.01"></td>
+                <td><input type="number"  name="ferias_mai" step="0.01"></td>
+                <td><input type="number"  name="ferias_jun" step="0.01"></td>
+                <td><input type="number"  name="ferias_jul" step="0.01"></td>
+                <td><input type="number"  name="ferias_ago" step="0.01"></td>
+                <td><input type="number"  name="ferias_set" step="0.01"></td>
+                <td><input type="number"  name="ferias_out" step="0.01"></td>
+                <td><input type="number"  name="ferias_nov" step="0.01"></td>
+                <td><input type="number"  name="ferias_dez" step="0.01"></td>
+            </tr>
+            <tr>
+                <td>Rendimentos</td>
+                <td><input type="number"  name="rendimentos_jan" step="0.01"></td>
+                <td><input type="number"  name="rendimentos_fev" step="0.01"></td>
+                <td><input type="number"  name="rendimentos_mar" step="0.01"></td>
+                <td><input type="number"  name="rendimentos_abr" step="0.01"></td>
+                <td><input type="number"  name="rendimentos_mai" step="0.01"></td>
+                <td><input type="number"  name="rendimentos_jun" step="0.01"></td>
+                <td><input type="number"  name="rendimentos_jul" step="0.01"></td>
+                <td><input type="number"  name="rendimentos_ago" step="0.01"></td>
+                <td><input type="number"  name="rendimentos_set" step="0.01"></td>
+                <td><input type="number"  name="rendimentos_out" step="0.01"></td>
+                <td><input type="number"  name="rendimentos_nov" step="0.01"></td>
+                <td><input type="number"  name="rendimentos_dez" step="0.01"></td>
+            </tr>
+            <tr>
+                <td>Outros</td>
+                <td><input type="number"  name="outros_receitas_jan" step="0.01"></td>
+                <td><input type="number"  name="outros_receitas_fev" step="0.01"></td>
+                <td><input type="number"  name="outros_receitas_mar" step="0.01"></td>
+                <td><input type="number"  name="outros_receitas_abr" step="0.01"></td>
+                <td><input type="number"  name="outros_receitas_mai" step="0.01"></td>
+                <td><input type="number"  name="outros_receitas_jun" step="0.01"></td>
+                <td><input type="number"  name="outros_receitas_jul" step="0.01"></td>
+                <td><input type="number"  name="outros_receitas_ago" step="0.01"></td>
+                <td><input type="number"  name="outros_receitas_set" step="0.01"></td>
+                <td><input type="number"  name="outros_receitas_out" step="0.01"></td>
+                <td><input type="number"  name="outros_receitas_nov" step="0.01"></td>
+                <td><input type="number"  name="outros_receitas_dez" step="0.01"></td>
+            </tr>           
+        </table>
+        
+        <table>
+            <tr>
+                <th rowspan="8" class="vertical-text">Investimentos</th>
+                <td>Ações</td>
+                <td><input type="number"  name="acoes_jan" step="0.01"></td>
+                <td><input type="number"  name="acoes_fev" step="0.01"></td>
+                <td><input type="number"  name="acoes_mar" step="0.01"></td>
+                <td><input type="number"  name="acoes_abr" step="0.01"></td>
+                <td><input type="number"  name="acoes_mai" step="0.01"></td>
+                <td><input type="number"  name="acoes_jun" step="0.01"></td>
+                <td><input type="number"  name="acoes_jul" step="0.01"></td>
+                <td><input type="number"  name="acoes_ago" step="0.01"></td>
+                <td><input type="number"  name="acoes_set" step="0.01"></td>
+                <td><input type="number"  name="acoes_out" step="0.01"></td>
+                <td><input type="number"  name="acoes_nov" step="0.01"></td>
+                <td><input type="number"  name="acoes_dez" step="0.01"></td>
+            </tr>
+            <tr>
+                <td>Tesouro Direto</td>
+                <td><input type="number"  name="tesouro_direto_jan" step="0.01"></td>
+                <td><input type="number"  name="tesouro_direto_fev" step="0.01"></td>
+                <td><input type="number"  name="tesouro_direto_mar" step="0.01"></td>
+                <td><input type="number"  name="tesouro_direto_abr" step="0.01"></td>
+                <td><input type="number"  name="tesouro_direto_mai" step="0.01"></td>
+                <td><input type="number"  name="tesouro_direto_jun" step="0.01"></td>
+                <td><input type="number"  name="tesouro_direto_jul" step="0.01"></td>
+                <td><input type="number"  name="tesouro_direto_ago" step="0.01"></td>
+                <td><input type="number"  name="tesouro_direto_set" step="0.01"></td>
+                <td><input type="number"  name="tesouro_direto_out" step="0.01"></td>
+                <td><input type="number"  name="tesouro_direto_nov" step="0.01"></td>
+                <td><input type="number"  name="tesouro_direto_dez" step="0.01"></td>
+            </tr>
+            <tr>
+                <td>Renda Fixa</td>
+                <td><input type="number"  name="renda_fixa_jan" step="0.01"></td>
+                <td><input type="number"  name="renda_fixa_fev" step="0.01"></td>
+                <td><input type="number"  name="renda_fixa_mar" step="0.01"></td>
+                <td><input type="number"  name="renda_fixa_abr" step="0.01"></td>
+                <td><input type="number"  name="renda_fixa_mai" step="0.01"></td>
+                <td><input type="number"  name="renda_fixa_jun" step="0.01"></td>
+                <td><input type="number"  name="renda_fixa_jul" step="0.01"></td>
+                <td><input type="number"  name="renda_fixa_ago" step="0.01"></td>
+                <td><input type="number"  name="renda_fixa_set" step="0.01"></td>
+                <td><input type="number"  name="renda_fixa_out" step="0.01"></td>
+                <td><input type="number"  name="renda_fixa_nov" step="0.01"></td>
+                <td><input type="number"  name="renda_fixa_dez" step="0.01"></td>
+            </tr>
+            <tr>
+                <td>Previdência Privada</td>
+                <td><input type="number"  name="previdencia_privada_jan" step="0.01"></td>
+                <td><input type="number"  name="previdencia_privada_fev" step="0.01"></td>
+                <td><input type="number"  name="previdencia_privada_mar" step="0.01"></td>
+                <td><input type="number"  name="previdencia_privada_abr" step="0.01"></td>
+                <td><input type="number"  name="previdencia_privada_mai" step="0.01"></td>
+                <td><input type="number"  name="previdencia_privada_jun" step="0.01"></td>
+                <td><input type="number"  name="previdencia_privada_jul" step="0.01"></td>
+                <td><input type="number"  name="previdencia_privada_ago" step="0.01"></td>
+                <td><input type="number"  name="previdencia_privada_set" step="0.01"></td>
+                <td><input type="number"  name="previdencia_privada_out" step="0.01"></td>
+                <td><input type="number"  name="previdencia_privada_nov" step="0.01"></td>
+                <td><input type="number"  name="previdencia_privada_dez" step="0.01"></td>
+            </tr>
+            <tr>
+                <td>Outros Investimentos</td>
+                <td><input type="number"  name="outros_investimentos_jan" step="0.01"></td>
+                <td><input type="number"  name="outros_investimentos_fev" step="0.01"></td>
+                <td><input type="number"  name="outros_investimentos_mar" step="0.01"></td>
+                <td><input type="number"  name="outros_investimentos_abr" step="0.01"></td>
+                <td><input type="number"  name="outros_investimentos_mai" step="0.01"></td>
+                <td><input type="number"  name="outros_investimentos_jun" step="0.01"></td>
+                <td><input type="number"  name="outros_investimentos_jul" step="0.01"></td>
+                <td><input type="number"  name="outros_investimentos_ago" step="0.01"></td>
+                <td><input type="number"  name="outros_investimentos_set" step="0.01"></td>
+                <td><input type="number"  name="outros_investimentos_out" step="0.01"></td>
+                <td><input type="number"  name="outros_investimentos_nov" step="0.01"></td>
+                <td><input type="number"  name="outros_investimentos_dez" step="0.01"></td>
+            </tr>
+            
+        </table>
+
+
+<table>
+    <tr>
+        <th rowspan="8" class="vertical-text">Despesas Fixas</th> 
+        <td>Aluguel</td>
+        <td><input type="number"  name="aluguel_fixo_jan" step="0.01"></td>
+        <td><input type="number"  name="aluguel_fixo_fev" step="0.01"></td>
+        <td><input type="number"  name="aluguel_fixo_mar" step="0.01"></td>
+        <td><input type="number"  name="aluguel_fixo_abr" step="0.01"></td>
+        <td><input type="number"  name="aluguel_fixo_mai" step="0.01"></td>
+        <td><input type="number"  name="aluguel_fixo_jun" step="0.01"></td>
+        <td><input type="number"  name="aluguel_fixo_jul" step="0.01"></td>
+        <td><input type="number"  name="aluguel_fixo_ago" step="0.01"></td>
+        <td><input type="number"  name="aluguel_fixo_set" step="0.01"></td>
+        <td><input type="number"  name="aluguel_fixo_out" step="0.01"></td>
+        <td><input type="number"  name="aluguel_fixo_nov" step="0.01"></td>
+        <td><input type="number"  name="aluguel_fixo_dez" step="0.01"></td>
+    </tr>
+    <tr>
+        <td>Condomínio</td>
+        <td><input type="number"  name="condominio_jan" step="0.01"></td>
+        <td><input type="number"  name="condominio_fev" step="0.01"></td>
+        <td><input type="number"  name="condominio_mar" step="0.01"></td>
+        <td><input type="number"  name="condominio_abr" step="0.01"></td>
+        <td><input type="number"  name="condominio_mai" step="0.01"></td>
+        <td><input type="number"  name="condominio_jun" step="0.01"></td>
+        <td><input type="number"  name="condominio_jul" step="0.01"></td>
+        <td><input type="number"  name="condominio_ago" step="0.01"></td>
+        <td><input type="number"  name="condominio_set" step="0.01"></td>
+        <td><input type="number"  name="condominio_out" step="0.01"></td>
+        <td><input type="number"  name="condominio_nov" step="0.01"></td>
+        <td><input type="number"  name="condominio_dez" step="0.01"></td>
+    </tr>
+    <tr>
+        <td>Prestação da Casa</td>
+        <td><input type="number"  name="prestacao_casa_jan" step="0.01"></td>
+        <td><input type="number"  name="prestacao_casa_fev" step="0.01"></td>
+        <td><input type="number"  name="prestacao_casa_mar" step="0.01"></td>
+        <td><input type="number"  name="prestacao_casa_abr" step="0.01"></td>
+        <td><input type="number"  name="prestacao_casa_mai" step="0.01"></td>
+        <td><input type="number"  name="prestacao_casa_jun" step="0.01"></td>
+        <td><input type="number"  name="prestacao_casa_jul" step="0.01"></td>
+        <td><input type="number"  name="prestacao_casa_ago" step="0.01"></td>
+        <td><input type="number"  name="prestacao_casa_set" step="0.01"></td>
+        <td><input type="number"  name="prestacao_casa_out" step="0.01"></td>
+        <td><input type="number"  name="prestacao_casa_nov" step="0.01"></td>
+        <td><input type="number"  name="prestacao_casa_dez" step="0.01"></td>
+    </tr>
+    <tr>
+        <td>Seguro da Casa</td>
+        <td><input type="number"  name="seguro_casa_jan" step="0.01"></td>
+        <td><input type="number"  name="seguro_casa_fev" step="0.01"></td>
+        <td><input type="number"  name="seguro_casa_mar" step="0.01"></td>
+        <td><input type="number"  name="seguro_casa_abr" step="0.01"></td>
+        <td><input type="number"  name="seguro_casa_mai" step="0.01"></td>
+        <td><input type="number"  name="seguro_casa_jun" step="0.01"></td>
+        <td><input type="number"  name="seguro_casa_jul" step="0.01"></td>
+        <td><input type="number"  name="seguro_casa_ago" step="0.01"></td>
+        <td><input type="number"  name="seguro_casa_set" step="0.01"></td>
+        <td><input type="number"  name="seguro_casa_out" step="0.01"></td>
+        <td><input type="number"  name="seguro_casa_nov" step="0.01"></td>
+        <td><input type="number"  name="seguro_casa_dez" step="0.01"></td>
+    </tr>
+    <tr>
+        <td>Diarista</td>
+        <td><input type="number"  name="diarista_jan" step="0.01"></td>
+        <td><input type="number"  name="diarista_fev" step="0.01"></td>
+        <td><input type="number"  name="diarista_mar" step="0.01"></td>
+        <td><input type="number"  name="diarista_abr" step="0.01"></td>
+        <td><input type="number"  name="diarista_mai" step="0.01"></td>
+        <td><input type="number"  name="diarista_jun" step="0.01"></td>
+        <td><input type="number"  name="diarista_jul" step="0.01"></td>
+        <td><input type="number"  name="diarista_ago" step="0.01"></td>
+        <td><input type="number"  name="diarista_set" step="0.01"></td>
+        <td><input type="number"  name="diarista_out" step="0.01"></td>
+        <td><input type="number"  name="diarista_nov" step="0.01"></td>
+        <td><input type="number"  name="diarista_dez" step="0.01"></td>
+    </tr>
+    
+</table>
+<!-- Despesas Fixas - Transporte -->
+<table>
+    <tr>
+        <th rowspan="8" class="vertical-text">Despesas Fixas (Transporte)</th> 
+        <td>Prestação do Carro</td>
+        <td><input type="number"  name="prestacao_carro_jan" step="0.01"></td>
+        <td><input type="number"  name="prestacao_carro_fev" step="0.01"></td>
+        <td><input type="number"  name="prestacao_carro_mar" step="0.01"></td>
+        <td><input type="number"  name="prestacao_carro_abr" step="0.01"></td>
+        <td><input type="number"  name="prestacao_carro_mai" step="0.01"></td>
+        <td><input type="number"  name="prestacao_carro_jun" step="0.01"></td>
+        <td><input type="number"  name="prestacao_carro_jul" step="0.01"></td>
+        <td><input type="number"  name="prestacao_carro_ago" step="0.01"></td>
+        <td><input type="number"  name="prestacao_carro_set" step="0.01"></td>
+        <td><input type="number"  name="prestacao_carro_out" step="0.01"></td>
+        <td><input type="number"  name="prestacao_carro_nov" step="0.01"></td>
+        <td><input type="number"  name="prestacao_carro_dez" step="0.01"></td>
+    </tr>
+    <tr>
+        <td>Seguro do Carro</td>
+        <td><input type="number"  name="seguro_carro_jan" step="0.01"></td>
+        <td><input type="number"  name="seguro_carro_fev" step="0.01"></td>
+        <td><input type="number"  name="seguro_carro_mar" step="0.01"></td>
+        <td><input type="number"  name="seguro_carro_abr" step="0.01"></td>
+        <td><input type="number"  name="seguro_carro_mai" step="0.01"></td>
+        <td><input type="number"  name="seguro_carro_jun" step="0.01"></td>
+        <td><input type="number"  name="seguro_carro_jul" step="0.01"></td>
+        <td><input type="number"  name="seguro_carro_ago" step="0.01"></td>
+        <td><input type="number"  name="seguro_carro_set" step="0.01"></td>
+        <td><input type="number"  name="seguro_carro_out" step="0.01"></td>
+        <td><input type="number"  name="seguro_carro_nov" step="0.01"></td>
+        <td><input type="number"  name="seguro_carro_dez" step="0.01"></td>
+    </tr>    
+</table>
+<!-- Despesas Fixas - Saúde -->
+<table>
+    <tr>
+        <th rowspan="8" class="vertical-text">Despesas Fixas (Saúde)</th> 
+        <td>Plano de Saúde</td>
+        <td><input type="number"  name="plano_saude_jan" step="0.01"></td>
+        <td><input type="number"  name="plano_saude_fev" step="0.01"></td>
+        <td><input type="number"  name="plano_saude_mar" step="0.01"></td>
+        <td><input type="number"  name="plano_saude_abr" step="0.01"></td>
+        <td><input type="number"  name="plano_saude_mai" step="0.01"></td>
+        <td><input type="number"  name="plano_saude_jun" step="0.01"></td>
+        <td><input type="number"  name="plano_saude_jul" step="0.01"></td>
+        <td><input type="number"  name="plano_saude_ago" step="0.01"></td>
+        <td><input type="number"  name="plano_saude_set" step="0.01"></td>
+        <td><input type="number"  name="plano_saude_out" step="0.01"></td>
+        <td><input type="number"  name="plano_saude_nov" step="0.01"></td>
+        <td><input type="number"  name="plano_saude_dez" step="0.01"></td>
+    </tr>
+    <tr>
+        <td>Seguro Saúde</td>
+        <td><input type="number"  name="seguro_saude_jan" step="0.01"></td>
+        <td><input type="number"  name="seguro_saude_fev" step="0.01"></td>
+        <td><input type="number"  name="seguro_saude_mar" step="0.01"></td>
+        <td><input type="number"  name="seguro_saude_abr" step="0.01"></td>
+        <td><input type="number"  name="seguro_saude_mai" step="0.01"></td>
+        <td><input type="number"  name="seguro_saude_jun" step="0.01"></td>
+        <td><input type="number"  name="seguro_saude_jul" step="0.01"></td>
+        <td><input type="number"  name="seguro_saude_ago" step="0.01"></td>
+        <td><input type="number"  name="seguro_saude_set" step="0.01"></td>
+        <td><input type="number"  name="seguro_saude_out" step="0.01"></td>
+        <td><input type="number"  name="seguro_saude_nov" step="0.01"></td>
+        <td><input type="number"  name="seguro_saude_dez" step="0.01"></td>
+    </tr>    
+</table>
+<!-- Despesas Fixas - Educação -->
+<table>
+    <tr>
+        <th rowspan="8" class="vertical-text">Despesas Fixas (Educação)</th> 
+        <td>Colégio</td>
+        <td><input type="number"  name="colegio_jan" step="0.01"></td>
+        <td><input type="number"  name="colegio_fev" step="0.01"></td>
+        <td><input type="number"  name="colegio_mar" step="0.01"></td>
+        <td><input type="number"  name="colegio_abr" step="0.01"></td>
+        <td><input type="number"  name="colegio_mai" step="0.01"></td>
+        <td><input type="number"  name="colegio_jun" step="0.01"></td>
+        <td><input type="number"  name="colegio_jul" step="0.01"></td>
+        <td><input type="number"  name="colegio_ago" step="0.01"></td>
+        <td><input type="number"  name="colegio_set" step="0.01"></td>
+        <td><input type="number"  name="colegio_out" step="0.01"></td>
+        <td><input type="number"  name="colegio_nov" step="0.01"></td>
+        <td><input type="number"  name="colegio_dez" step="0.01"></td>
+    </tr>
+    <tr>
+        <td>Faculdade</td>
+        <td><input type="number"  name="faculdade_jan" step="0.01"></td>
+        <td><input type="number"  name="faculdade_fev" step="0.01"></td>
+        <td><input type="number"  name="faculdade_mar" step="0.01"></td>
+        <td><input type="number"  name="faculdade_abr" step="0.01"></td>
+        <td><input type="number"  name="faculdade_mai" step="0.01"></td>
+        <td><input type="number"  name="faculdade_jun" step="0.01"></td>
+        <td><input type="number"  name="faculdade_jul" step="0.01"></td>
+        <td><input type="number"  name="faculdade_ago" step="0.01"></td>
+        <td><input type="number"  name="faculdade_set" step="0.01"></td>
+        <td><input type="number"  name="faculdade_out" step="0.01"></td>
+        <td><input type="number"  name="faculdade_nov" step="0.01"></td>
+        <td><input type="number"  name="faculdade_dez" step="0.01"></td>
+    </tr>
+    <tr>
+        <td>Cursos</td>
+        <td><input type="number"  name="cursos_jan" step="0.01"></td>
+        <td><input type="number"  name="cursos_fev" step="0.01"></td>
+        <td><input type="number"  name="cursos_mar" step="0.01"></td>
+        <td><input type="number"  name="cursos_abr" step="0.01"></td>
+        <td><input type="number"  name="cursos_mai" step="0.01"></td>
+        <td><input type="number"  name="cursos_jun" step="0.01"></td>
+        <td><input type="number"  name="cursos_jul" step="0.01"></td>
+        <td><input type="number"  name="cursos_ago" step="0.01"></td>
+        <td><input type="number"  name="cursos_set" step="0.01"></td>
+        <td><input type="number"  name="cursos_out" step="0.01"></td>
+        <td><input type="number"  name="cursos_nov" step="0.01"></td>
+        <td><input type="number"  name="cursos_dez" step="0.01"></td>
+    </tr>    
+</table>
+<!-- Despesas Fixas - Imposto -->
+<table>
+    <tr>
+        <th rowspan="8" class="vertical-text">Despesas Fixas (Imposto)</th> 
+        <td>IPTU</td>
+        <td><input type="number"  name="iptu_jan" step="0.01"></td>
+        <td><input type="number"  name="iptu_fev" step="0.01"></td>
+        <td><input type="number"  name="iptu_mar" step="0.01"></td>
+        <td><input type="number"  name="iptu_abr" step="0.01"></td>
+        <td><input type="number"  name="iptu_mai" step="0.01"></td>
+        <td><input type="number"  name="iptu_jun" step="0.01"></td>
+        <td><input type="number"  name="iptu_jul" step="0.01"></td>
+        <td><input type="number"  name="iptu_ago" step="0.01"></td>
+        <td><input type="number"  name="iptu_set" step="0.01"></td>
+        <td><input type="number"  name="iptu_out" step="0.01"></td>
+        <td><input type="number"  name="iptu_nov" step="0.01"></td>
+        <td><input type="number"  name="iptu_dez" step="0.01"></td>
+    </tr>
+    <tr>
+        <td>IPVA</td>
+        <td><input type="number"  name="ipva_jan" step="0.01"></td>
+        <td><input type="number"  name="ipva_fev" step="0.01"></td>
+        <td><input type="number"  name="ipva_mar" step="0.01"></td>
+        <td><input type="number"  name="ipva_abr" step="0.01"></td>
+        <td><input type="number"  name="ipva_mai" step="0.01"></td>
+        <td><input type="number"  name="ipva_jun" step="0.01"></td>
+        <td><input type="number"  name="ipva_jul" step="0.01"></td>
+        <td><input type="number"  name="ipva_ago" step="0.01"></td>
+        <td><input type="number"  name="ipva_set" step="0.01"></td>
+        <td><input type="number"  name="ipva_out" step="0.01"></td>
+        <td><input type="number"  name="ipva_nov" step="0.01"></td>
+        <td><input type="number"  name="ipva_dez" step="0.01"></td>
+    </tr>
+    
+</table>
+<!-- Despesas Fixas - Outros -->
+<table>
+  
+        <tr>
+            <th rowspan="8" class="vertical-text">Despesas Fixas (Outros)</th> 
+            <td>Empréstimos</td>
+            <td><input type="number"  name="emprestimos_jan" step="0.01"></td>
+            <td><input type="number"  name="emprestimos_fev" step="0.01"></td>
+            <td><input type="number"  name="emprestimos_mar" step="0.01"></td>
+            <td><input type="number"  name="emprestimos_abr" step="0.01"></td>
+            <td><input type="number"  name="emprestimos_mai" step="0.01"></td>
+            <td><input type="number"  name="emprestimos_jun" step="0.01"></td>
+            <td><input type="number"  name="emprestimos_jul" step="0.01"></td>
+            <td><input type="number"  name="emprestimos_ago" step="0.01"></td>
+            <td><input type="number"  name="emprestimos_set" step="0.01"></td>
+            <td><input type="number"  name="emprestimos_out" step="0.01"></td>
+            <td><input type="number"  name="emprestimos_nov" step="0.01"></td>
+            <td><input type="number"  name="emprestimos_dez" step="0.01"></td>
+        </tr>
+        <tr>
+            <td>Seguro de Vida</td>
+            <td><input type="number"  name="seguro_vida_jan" step="0.01"></td>
+            <td><input type="number"  name="seguro_vida_fev" step="0.01"></td>
+            <td><input type="number"  name="seguro_vida_mar" step="0.01"></td>
+            <td><input type="number"  name="seguro_vida_abr" step="0.01"></td>
+            <td><input type="number"  name="seguro_vida_mai" step="0.01"></td>
+            <td><input type="number"  name="seguro_vida_jun" step="0.01"></td>
+            <td><input type="number"  name="seguro_vida_jul" step="0.01"></td>
+            <td><input type="number"  name="seguro_vida_ago" step="0.01"></td>
+            <td><input type="number"  name="seguro_vida_set" step="0.01"></td>
+            <td><input type="number"  name="seguro_vida_out" step="0.01"></td>
+            <td><input type="number"  name="seguro_vida_nov" step="0.01"></td>
+            <td><input type="number"  name="seguro_vida_dez" step="0.01"></td>
+        </tr>        
+</table>
+
+<!-- Despesas Variáveis - Habitação -->
+<table>
+    <tr>
+        <th rowspan="8" class="vertical-text">Despesas Variáveis (Habitação)</th> 
+        <td>Luz</td>
+        <td><input type="number"  name="luz_jan" step="0.01"></td>
+        <td><input type="number"  name="luz_fev" step="0.01"></td>
+        <td><input type="number"  name="luz_mar" step="0.01"></td>
+        <td><input type="number"  name="luz_abr" step="0.01"></td>
+        <td><input type="number"  name="luz_mai" step="0.01"></td>
+        <td><input type="number"  name="luz_jun" step="0.01"></td>
+        <td><input type="number"  name="luz_jul" step="0.01"></td>
+        <td><input type="number"  name="luz_ago" step="0.01"></td>
+        <td><input type="number"  name="luz_set" step="0.01"></td>
+        <td><input type="number"  name="luz_out" step="0.01"></td>
+        <td><input type="number"  name="luz_nov" step="0.01"></td>
+        <td><input type="number"  name="luz_dez" step="0.01"></td>
+    </tr>
+    <tr>
+        <td>Água</td>
+        <td><input type="number"  name="agua_jan" step="0.01"></td>
+        <td><input type="number"  name="agua_fev" step="0.01"></td>
+        <td><input type="number"  name="agua_mar" step="0.01"></td>
+        <td><input type="number"  name="agua_abr" step="0.01"></td>
+        <td><input type="number"  name="agua_mai" step="0.01"></td>
+        <td><input type="number"  name="agua_jun" step="0.01"></td>
+        <td><input type="number"  name="agua_jul" step="0.01"></td>
+        <td><input type="number"  name="agua_ago" step="0.01"></td>
+        <td><input type="number"  name="agua_set" step="0.01"></td>
+        <td><input type="number"  name="agua_out" step="0.01"></td>
+        <td><input type="number"  name="agua_nov" step="0.01"></td>
+        <td><input type="number"  name="agua_dez" step="0.01"></td>
+    </tr>
+    <tr>
+        <td>Telefone</td>
+        <td><input type="number"  name="telefone_jan" step="0.01"></td>
+        <td><input type="number"  name="telefone_fev" step="0.01"></td>
+        <td><input type="number"  name="telefone_mar" step="0.01"></td>
+        <td><input type="number"  name="telefone_abr" step="0.01"></td>
+        <td><input type="number"  name="telefone_mai" step="0.01"></td>
+        <td><input type="number"  name="telefone_jun" step="0.01"></td>
+        <td><input type="number"  name="telefone_jul" step="0.01"></td>
+        <td><input type="number"  name="telefone_ago" step="0.01"></td>
+        <td><input type="number"  name="telefone_set" step="0.01"></td>
+        <td><input type="number"  name="telefone_out" step="0.01"></td>
+        <td><input type="number"  name="telefone_nov" step="0.01"></td>
+        <td><input type="number"  name="telefone_dez" step="0.01"></td>
+    </tr>
+    <tr>
+        <td>Gás</td>
+        <td><input type="number"  name="gas_jan" step="0.01"></td>
+        <td><input type="number"  name="gas_fev" step="0.01"></td>
+        <td><input type="number"  name="gas_mar" step="0.01"></td>
+        <td><input type="number"  name="gas_abr" step="0.01"></td>
+        <td><input type="number"  name="gas_mai" step="0.01"></td>
+        <td><input type="number"  name="gas_jun" step="0.01"></td>
+        <td><input type="number"  name="gas_jul" step="0.01"></td>
+        <td><input type="number"  name="gas_ago" step="0.01"></td>
+        <td><input type="number"  name="gas_set" step="0.01"></td>
+        <td><input type="number"  name="gas_out" step="0.01"></td>
+        <td><input type="number"  name="gas_nov" step="0.01"></td>
+        <td><input type="number"  name="gas_dez" step="0.01"></td>
+    </tr>    
+    <tr>
+        <td>TV e Streaming</td>
+        <td><input type="number"  name="tv_streaming_jan" step="0.01"></td>
+        <td><input type="number"  name="tv_streaming_fev" step="0.01"></td>
+        <td><input type="number"  name="tv_streaming_mar" step="0.01"></td>
+        <td><input type="number"  name="tv_streaming_abr" step="0.01"></td>
+        <td><input type="number"  name="tv_streaming_mai" step="0.01"></td>
+        <td><input type="number"  name="tv_streaming_jun" step="0.01"></td>
+        <td><input type="number"  name="tv_streaming_jul" step="0.01"></td>
+        <td><input type="number"  name="tv_streaming_ago" step="0.01"></td>
+        <td><input type="number"  name="tv_streaming_set" step="0.01"></td>
+        <td><input type="number"  name="tv_streaming_out" step="0.01"></td>
+        <td><input type="number"  name="tv_streaming_nov" step="0.01"></td>
+        <td><input type="number"  name="tv_streaming_dez" step="0.01"></td>
+    </tr>
+    <tr>
+        <td>Internet</td>
+        <td><input type="number"  name="internet_jan" step="0.01"></td>
+        <td><input type="number"  name="internet_fev" step="0.01"></td>
+        <td><input type="number"  name="internet_mar" step="0.01"></td>
+        <td><input type="number"  name="internet_abr" step="0.01"></td>
+        <td><input type="number"  name="internet_mai" step="0.01"></td>
+        <td><input type="number"  name="internet_jun" step="0.01"></td>
+        <td><input type="number"  name="internet_jul" step="0.01"></td>
+        <td><input type="number"  name="internet_ago" step="0.01"></td>
+        <td><input type="number"  name="internet_set" step="0.01"></td>
+        <td><input type="number"  name="internet_out" step="0.01"></td>
+        <td><input type="number"  name="internet_nov" step="0.01"></td>
+        <td><input type="number"  name="internet_dez" step="0.01"></td>
+    </tr>
+</table>
+
+<!-- Despesas Variáveis - Transporte -->
+<table>
+    <tr>
+        <th rowspan="8" class="vertical-text">Despesas Variáveis (Transporte)</th>
+        <td>Metrô</td>
+        <td><input type="number"  name="metro_jan" step="0.01"></td>
+        <td><input type="number"  name="metro_fev" step="0.01"></td>
+        <td><input type="number"  name="metro_mar" step="0.01"></td>
+        <td><input type="number"  name="metro_abr" step="0.01"></td>
+        <td><input type="number"  name="metro_mai" step="0.01"></td>
+        <td><input type="number"  name="metro_jun" step="0.01"></td>
+        <td><input type="number"  name="metro_jul" step="0.01"></td>
+        <td><input type="number"  name="metro_ago" step="0.01"></td>
+        <td><input type="number"  name="metro_set" step="0.01"></td>
+        <td><input type="number"  name="metro_out" step="0.01"></td>
+        <td><input type="number"  name="metro_nov" step="0.01"></td>
+        <td><input type="number"  name="metro_dez" step="0.01"></td>
+    </tr>
+    <tr>
+        <td>Ônibus</td>
+        <td><input type="number"  name="onibus_jan" step="0.01"></td>
+        <td><input type="number"  name="onibus_fev" step="0.01"></td>
+        <td><input type="number"  name="onibus_mar" step="0.01"></td>
+        <td><input type="number"  name="onibus_abr" step="0.01"></td>
+        <td><input type="number"  name="onibus_mai" step="0.01"></td>
+        <td><input type="number"  name="onibus_jun" step="0.01"></td>
+        <td><input type="number"  name="onibus_jul" step="0.01"></td>
+        <td><input type="number"  name="onibus_ago" step="0.01"></td>
+        <td><input type="number"  name="onibus_set" step="0.01"></td>
+        <td><input type="number"  name="onibus_out" step="0.01"></td>
+        <td><input type="number"  name="onibus_nov" step="0.01"></td>
+        <td><input type="number"  name="onibus_dez" step="0.01"></td>
+    </tr>
+    <tr>
+        <td>Combustível</td>
+        <td><input type="number"  name="combustivel_jan" step="0.01"></td>
+        <td><input type="number"  name="combustivel_fev" step="0.01"></td>
+        <td><input type="number"  name="combustivel_mar" step="0.01"></td>
+        <td><input type="number"  name="combustivel_abr" step="0.01"></td>
+        <td><input type="number"  name="combustivel_mai" step="0.01"></td>
+        <td><input type="number"  name="combustivel_jun" step="0.01"></td>
+        <td><input type="number"  name="combustivel_jul" step="0.01"></td>
+        <td><input type="number"  name="combustivel_ago" step="0.01"></td>
+        <td><input type="number"  name="combustivel_set" step="0.01"></td>
+        <td><input type="number"  name="combustivel_out" step="0.01"></td>
+        <td><input type="number"  name="combustivel_nov" step="0.01"></td>
+        <td><input type="number"  name="combustivel_dez" step="0.01"></td>
+    </tr>
+    <tr>
+        <td>Estacionamento</td>
+        <td><input type="number"  name="estacionamento_jan" step="0.01"></td>
+        <td><input type="number"  name="estacionamento_fev" step="0.01"></td>
+        <td><input type="number"  name="estacionamento_mar" step="0.01"></td>
+        <td><input type="number"  name="estacionamento_abr" step="0.01"></td>
+        <td><input type="number"  name="estacionamento_mai" step="0.01"></td>
+        <td><input type="number"  name="estacionamento_jun" step="0.01"></td>
+        <td><input type="number"  name="estacionamento_jul" step="0.01"></td>
+        <td><input type="number"  name="estacionamento_ago" step="0.01"></td>
+        <td><input type="number"  name="estacionamento_set" step="0.01"></td>
+        <td><input type="number"  name="estacionamento_out" step="0.01"></td>
+        <td><input type="number"  name="estacionamento_nov" step="0.01"></td>
+        <td><input type="number"  name="estacionamento_dez" step="0.01"></td>
+    </tr>
+</table>
+<!-- Despesas Variáveis - Alimentação -->
+<table>
+    <tr>
+        <th rowspan="8" class="vertical-text">Despesas Variáveis (Alimentação)</th>
+        <td>Supermercado</td>
+        <td><input type="number"  name="supermercado_jan" step="0.01"></td>
+        <td><input type="number"  name="supermercado_fev" step="0.01"></td>
+        <td><input type="number"  name="supermercado_mar" step="0.01"></td>
+        <td><input type="number"  name="supermercado_abr" step="0.01"></td>
+        <td><input type="number"  name="supermercado_mai" step="0.01"></td>
+        <td><input type="number"  name="supermercado_jun" step="0.01"></td>
+        <td><input type="number"  name="supermercado_jul" step="0.01"></td>
+        <td><input type="number"  name="supermercado_ago" step="0.01"></td>
+        <td><input type="number"  name="supermercado_set" step="0.01"></td>
+        <td><input type="number"  name="supermercado_out" step="0.01"></td>
+        <td><input type="number"  name="supermercado_nov" step="0.01"></td>
+        <td><input type="number"  name="supermercado_dez" step="0.01"></td>
+    </tr>
+    <tr>
+        <td>Feira</td>
+        <td><input type="number"  name="feira_jan" step="0.01"></td>
+        <td><input type="number"  name="feira_fev" step="0.01"></td>
+        <td><input type="number"  name="feira_mar" step="0.01"></td>
+        <td><input type="number"  name="feira_abr" step="0.01"></td>
+        <td><input type="number"  name="feira_mai" step="0.01"></td>
+        <td><input type="number"  name="feira_jun" step="0.01"></td>
+        <td><input type="number"  name="feira_jul" step="0.01"></td>
+        <td><input type="number"  name="feira_ago" step="0.01"></td>
+        <td><input type="number"  name="feira_set" step="0.01"></td>
+        <td><input type="number"  name="feira_out" step="0.01"></td>
+        <td><input type="number"  name="feira_nov" step="0.01"></td>
+        <td><input type="number"  name="feira_dez" step="0.01"></td>
+    </tr>
+    <tr>
+        <td>Padaria</td>
+        <td><input type="number"  name="padaria_jan" step="0.01"></td>
+        <td><input type="number"  name="padaria_fev" step="0.01"></td>
+        <td><input type="number"  name="padaria_mar" step="0.01"></td>
+        <td><input type="number"  name="padaria_abr" step="0.01"></td>
+        <td><input type="number"  name="padaria_mai" step="0.01"></td>
+        <td><input type="number"  name="padaria_jun" step="0.01"></td>
+        <td><input type="number"  name="padaria_jul" step="0.01"></td>
+        <td><input type="number"  name="padaria_ago" step="0.01"></td>
+        <td><input type="number"  name="padaria_set" step="0.01"></td>
+        <td><input type="number"  name="padaria_out" step="0.01"></td>
+        <td><input type="number"  name="padaria_nov" step="0.01"></td>
+        <td><input type="number"  name="padaria_dez" step="0.01"></td>
+    </tr>
+    <tr>
+        <td>Delivery</td>
+        <td><input type="number"  name="delivery_jan" step="0.01"></td>
+        <td><input type="number"  name="delivery_fev" step="0.01"></td>
+        <td><input type="number"  name="delivery_mar" step="0.01"></td>
+        <td><input type="number"  name="delivery_abr" step="0.01"></td>
+        <td><input type="number"  name="delivery_mai" step="0.01"></td>
+        <td><input type="number"  name="delivery_jun" step="0.01"></td>
+        <td><input type="number"  name="delivery_jul" step="0.01"></td>
+        <td><input type="number"  name="delivery_ago" step="0.01"></td>
+        <td><input type="number"  name="delivery_set" step="0.01"></td>
+        <td><input type="number"  name="delivery_out" step="0.01"></td>
+        <td><input type="number"  name="delivery_nov" step="0.01"></td>
+        <td><input type="number"  name="delivery_dez" step="0.01"></td>
+    </tr>
+</table>
+<!-- Despesas Variáveis - Saúde -->
+<table>
+    <tr>
+        <th rowspan="8" class="vertical-text">Despesas Variáveis (Saúde)</th>
+        <td>Medicamentos</td>
+        <td><input type="number"  name="medicamentos_jan" step="0.01"></td>
+        <td><input type="number"  name="medicamentos_fev" step="0.01"></td>
+        <td><input type="number"  name="medicamentos_mar" step="0.01"></td>
+        <td><input type="number"  name="medicamentos_abr" step="0.01"></td>
+        <td><input type="number"  name="medicamentos_mai" step="0.01"></td>
+        <td><input type="number"  name="medicamentos_jun" step="0.01"></td>
+        <td><input type="number"  name="medicamentos_jul" step="0.01"></td>
+        <td><input type="number"  name="medicamentos_ago" step="0.01"></td>
+        <td><input type="number"  name="medicamentos_set" step="0.01"></td>
+        <td><input type="number"  name="medicamentos_out" step="0.01"></td>
+        <td><input type="number"  name="medicamentos_nov" step="0.01"></td>
+        <td><input type="number"  name="medicamentos_dez" step="0.01"></td>
+    </tr>
+</table>
+
+<!-- Despesas Variáveis - Cuidados Pessoais -->
+<table>
+    <tr>
+        <th rowspan="8" class="vertical-text">Despesas Variáveis (Cuidados Pessoais)</th>
+        <td>Cabeleireiro</td>
+        <td><input type="number"  name="cabeleireiro_jan" step="0.01"></td>
+        <td><input type="number"  name="cabeleireiro_fev" step="0.01"></td>
+        <td><input type="number"  name="cabeleireiro_mar" step="0.01"></td>
+        <td><input type="number"  name="cabeleireiro_abr" step="0.01"></td>
+        <td><input type="number"  name="cabeleireiro_mai" step="0.01"></td>
+        <td><input type="number"  name="cabeleireiro_jun" step="0.01"></td>
+        <td><input type="number"  name="cabeleireiro_jul" step="0.01"></td>
+        <td><input type="number"  name="cabeleireiro_ago" step="0.01"></td>
+        <td><input type="number"  name="cabeleireiro_set" step="0.01"></td>
+        <td><input type="number"  name="cabeleireiro_out" step="0.01"></td>
+        <td><input type="number"  name="cabeleireiro_nov" step="0.01"></td>
+        <td><input type="number"  name="cabeleireiro_dez" step="0.01"></td>
+    </tr>
+    <tr>
+        <td>Manicure</td>
+        <td><input type="number"  name="manicure_jan" step="0.01"></td>
+        <td><input type="number"  name="manicure_fev" step="0.01"></td>
+        <td><input type="number"  name="manicure_mar" step="0.01"></td>
+        <td><input type="number"  name="manicure_abr" step="0.01"></td>
+        <td><input type="number"  name="manicure_mai" step="0.01"></td>
+        <td><input type="number"  name="manicure_jun" step="0.01"></td>
+        <td><input type="number"  name="manicure_jul" step="0.01"></td>
+        <td><input type="number"  name="manicure_ago" step="0.01"></td>
+        <td><input type="number"  name="manicure_set" step="0.01"></td>
+        <td><input type="number"  name="manicure_out" step="0.01"></td>
+        <td><input type="number"  name="manicure_nov" step="0.01"></td>
+        <td><input type="number"  name="manicure_dez" step="0.01"></td>
+    </tr>
+    <tr>
+        <td>Esteticista</td>
+        <td><input type="number"  name="esteticista_jan" step="0.01"></td>
+        <td><input type="number"  name="esteticista_fev" step="0.01"></td>
+        <td><input type="number"  name="esteticista_mar" step="0.01"></td>
+        <td><input type="number"  name="esteticista_abr" step="0.01"></td>
+        <td><input type="number"  name="esteticista_mai" step="0.01"></td>
+        <td><input type="number"  name="esteticista_jun" step="0.01"></td>
+        <td><input type="number"  name="esteticista_jul" step="0.01"></td>
+        <td><input type="number"  name="esteticista_ago" step="0.01"></td>
+        <td><input type="number"  name="esteticista_set" step="0.01"></td>
+        <td><input type="number"  name="esteticista_out" step="0.01"></td>
+        <td><input type="number"  name="esteticista_nov" step="0.01"></td>
+        <td><input type="number"  name="esteticista_dez" step="0.01"></td>
+    </tr>
+    <tr>
+        <td>Academia</td>
+        <td><input type="number"  name="academia_jan" step="0.01"></td>
+        <td><input type="number"  name="academia_fev" step="0.01"></td>
+        <td><input type="number"  name="academia_mar" step="0.01"></td>
+        <td><input type="number"  name="academia_abr" step="0.01"></td>
+        <td><input type="number"  name="academia_mai" step="0.01"></td>
+        <td><input type="number"  name="academia_jun" step="0.01"></td>
+        <td><input type="number"  name="academia_jul" step="0.01"></td>
+        <td><input type="number"  name="academia_ago" step="0.01"></td>
+        <td><input type="number"  name="academia_set" step="0.01"></td>
+        <td><input type="number"  name="academia_out" step="0.01"></td>
+        <td><input type="number"  name="academia_nov" step="0.01"></td>
+        <td><input type="number"  name="academia_dez" step="0.01"></td>
+    </tr>
+    <tr>
+        <td>Clube</td>
+        <td><input type="number"  name="clube_jan" step="0.01"></td>
+        <td><input type="number"  name="clube_fev" step="0.01"></td>
+        <td><input type="number"  name="clube_mar" step="0.01"></td>
+        <td><input type="number"  name="clube_abr" step="0.01"></td>
+        <td><input type="number"  name="clube_mai" step="0.01"></td>
+        <td><input type="number"  name="clube_jun" step="0.01"></td>
+        <td><input type="number"  name="clube_jul" step="0.01"></td>
+        <td><input type="number"  name="clube_ago" step="0.01"></td>
+        <td><input type="number"  name="clube_set" step="0.01"></td>
+        <td><input type="number"  name="clube_out" step="0.01"></td>
+        <td><input type="number"  name="clube_nov" step="0.01"></td>
+        <td><input type="number"  name="clube_dez" step="0.01"></td>
+    </tr>
+</table>
+
+
+<!-- Despesas Extras -->
+<table>
+    <tr>
+        <th rowspan="8" class="vertical-text">Despesas Extras</th>
+        <td>Médico</td>
+        <td><input type="number"  name="medico_jan" step="0.01"></td>
+        <td><input type="number"  name="medico_fev" step="0.01"></td>
+        <td><input type="number"  name="medico_mar" step="0.01"></td>
+        <td><input type="number"  name="medico_abr" step="0.01"></td>
+        <td><input type="number"  name="medico_mai" step="0.01"></td>
+        <td><input type="number"  name="medico_jun" step="0.01"></td>
+        <td><input type="number"  name="medico_jul" step="0.01"></td>
+        <td><input type="number"  name="medico_ago" step="0.01"></td>
+        <td><input type="number"  name="medico_set" step="0.01"></td>
+        <td><input type="number"  name="medico_out" step="0.01"></td>
+        <td><input type="number"  name="medico_nov" step="0.01"></td>
+        <td><input type="number"  name="medico_dez" step="0.01"></td>
+    </tr>
+    <tr>
+        <td>Dentista</td>
+        <td><input type="number"  name="dentista_jan" step="0.01"></td>
+        <td><input type="number"  name="dentista_fev" step="0.01"></td>
+        <td><input type="number"  name="dentista_mar" step="0.01"></td>
+        <td><input type="number"  name="dentista_abr" step="0.01"></td>
+        <td><input type="number"  name="dentista_mai" step="0.01"></td>
+        <td><input type="number"  name="dentista_jun" step="0.01"></td>
+        <td><input type="number"  name="dentista_jul" step="0.01"></td>
+        <td><input type="number"  name="dentista_ago" step="0.01"></td>
+        <td><input type="number"  name="dentista_set" step="0.01"></td>
+        <td><input type="number"  name="dentista_out" step="0.01"></td>
+        <td><input type="number"  name="dentista_nov" step="0.01"></td>
+        <td><input type="number"  name="dentista_dez" step="0.01"></td>
+    </tr>
+    <tr>
+        <td>Carro (manutenção)</td>
+        <td><input type="number"  name="manutencao_carro_jan" step="0.01"></td>
+        <td><input type="number"  name="manutencao_carro_fev" step="0.01"></td>
+        <td><input type="number"  name="manutencao_carro_mar" step="0.01"></td>
+        <td><input type="number"  name="manutencao_carro_abr" step="0.01"></td>
+        <td><input type="number"  name="manutencao_carro_mai" step="0.01"></td>
+        <td><input type="number"  name="manutencao_carro_jun" step="0.01"></td>
+        <td><input type="number"  name="manutencao_carro_jul" step="0.01"></td>
+        <td><input type="number"  name="manutencao_carro_ago" step="0.01"></td>
+        <td><input type="number"  name="manutencao_carro_set" step="0.01"></td>
+        <td><input type="number"  name="manutencao_carro_out" step="0.01"></td>
+        <td><input type="number"  name="manutencao_carro_nov" step="0.01"></td>
+        <td><input type="number"  name="manutencao_carro_dez" step="0.01"></td>
+    </tr>
+    <tr>
+        <td>Casa (manutenção)</td>
+        <td><input type="number"  name="manutencao_casa_jan" step="0.01"></td>
+        <td><input type="number"  name="manutencao_casa_fev" step="0.01"></td>
+        <td><input type="number"  name="manutencao_casa_mar" step="0.01"></td>
+        <td><input type="number"  name="manutencao_casa_abr" step="0.01"></td>
+        <td><input type="number"  name="manutencao_casa_mai" step="0.01"></td>
+        <td><input type="number"  name="manutencao_casa_jun" step="0.01"></td>
+        <td><input type="number"  name="manutencao_casa_jul" step="0.01"></td>
+        <td><input type="number"  name="manutencao_casa_ago" step="0.01"></td>
+        <td><input type="number"  name="manutencao_casa_set" step="0.01"></td>
+        <td><input type="number"  name="manutencao_casa_out" step="0.01"></td>
+        <td><input type="number"  name="manutencao_casa_nov" step="0.01"></td>
+        <td><input type="number"  name="manutencao_casa_dez" step="0.01"></td>
+    </tr>
+    <tr>
+        <td>Material Escolar</td>
+        <td><input type="number"  name="material_escolar_jan" step="0.01"></td>
+        <td><input type="number"  name="material_escolar_fev" step="0.01"></td>
+        <td><input type="number"  name="material_escolar_mar" step="0.01"></td>
+        <td><input type="number"  name="material_escolar_abr" step="0.01"></td>
+        <td><input type="number"  name="material_escolar_mai" step="0.01"></td>
+        <td><input type="number"  name="material_escolar_jun" step="0.01"></td>
+        <td><input type="number"  name="material_escolar_jul" step="0.01"></td>
+        <td><input type="number"  name="material_escolar_ago" step="0.01"></td>
+        <td><input type="number"  name="material_escolar_set" step="0.01"></td>
+        <td><input type="number"  name="material_escolar_out" step="0.01"></td>
+        <td><input type="number"  name="material_escolar_nov" step="0.01"></td>
+        <td><input type="number"  name="material_escolar_dez" step="0.01"></td>
+    </tr>
+    <tr>
+        <td>Uniforme</td>
+        <td><input type="number"  name="uniforme_jan" step="0.01"></td>
+        <td><input type="number"  name="uniforme_fev" step="0.01"></td>
+        <td><input type="number"  name="uniforme_mar" step="0.01"></td>
+        <td><input type="number"  name="uniforme_abr" step="0.01"></td>
+        <td><input type="number"  name="uniforme_mai" step="0.01"></td>
+        <td><input type="number"  name="uniforme_jun" step="0.01"></td>
+        <td><input type="number"  name="uniforme_jul" step="0.01"></td>
+        <td><input type="number"  name="uniforme_ago" step="0.01"></td>
+        <td><input type="number"  name="uniforme_set" step="0.01"></td>
+        <td><input type="number"  name="uniforme_out" step="0.01"></td>
+        <td><input type="number"  name="uniforme_nov" step="0.01"></td>
+        <td><input type="number"  name="uniforme_dez" step="0.01"></td>
+    </tr>
+</table>
+<!-- Despesas Adicionais -->
+<table>
+    <tr>
+        <th rowspan="8" class="vertical-text">Despesas Adicionais</th>
+        <td>Viagens</td>
+        <td><input type="number"  name="viagens_jan" step="0.01"></td>
+        <td><input type="number"  name="viagens_fev" step="0.01"></td>
+        <td><input type="number"  name="viagens_mar" step="0.01"></td>
+        <td><input type="number"  name="viagens_abr" step="0.01"></td>
+        <td><input type="number"  name="viagens_mai" step="0.01"></td>
+        <td><input type="number"  name="viagens_jun" step="0.01"></td>
+        <td><input type="number"  name="viagens_jul" step="0.01"></td>
+        <td><input type="number"  name="viagens_ago" step="0.01"></td>
+        <td><input type="number"  name="viagens_set" step="0.01"></td>
+        <td><input type="number"  name="viagens_out" step="0.01"></td>
+        <td><input type="number"  name="viagens_nov" step="0.01"></td>
+        <td><input type="number"  name="viagens_dez" step="0.01"></td>
+    </tr>
+    <tr>
+        <td>Cinema/Teatro</td>
+        <td><input type="number"  name="cinema_teatro_jan" step="0.01"></td>
+        <td><input type="number"  name="cinema_teatro_fev" step="0.01"></td>
+        <td><input type="number"  name="cinema_teatro_mar" step="0.01"></td>
+        <td><input type="number"  name="cinema_teatro_abr" step="0.01"></td>
+        <td><input type="number"  name="cinema_teatro_mai" step="0.01"></td>
+        <td><input type="number"  name="cinema_teatro_jun" step="0.01"></td>
+        <td><input type="number"  name="cinema_teatro_jul" step="0.01"></td>
+        <td><input type="number"  name="cinema_teatro_ago" step="0.01"></td>
+        <td><input type="number"  name="cinema_teatro_set" step="0.01"></td>
+        <td><input type="number"  name="cinema_teatro_out" step="0.01"></td>
+        <td><input type="number"  name="cinema_teatro_nov" step="0.01"></td>
+        <td><input type="number"  name="cinema_teatro_dez" step="0.01"></td>
+    </tr>
+    <tr>
+        <td>Roupas</td>
+        <td><input type="number"  name="roupas_jan" step="0.01"></td>
+        <td><input type="number"  name="roupas_fev" step="0.01"></td>
+        <td><input type="number"  name="roupas_mar" step="0.01"></td>
+        <td><input type="number"  name="roupas_abr" step="0.01"></td>
+        <td><input type="number"  name="roupas_mai" step="0.01"></td>
+        <td><input type="number"  name="roupas_jun" step="0.01"></td>
+        <td><input type="number"  name="roupas_jul" step="0.01"></td>
+        <td><input type="number"  name="roupas_ago" step="0.01"></td>
+        <td><input type="number"  name="roupas_set" step="0.01"></td>
+        <td><input type="number"  name="roupas_out" step="0.01"></td>
+        <td><input type="number"  name="roupas_nov" step="0.01"></td>
+        <td><input type="number"  name="roupas_dez" step="0.01"></td>
+    </tr>
+    <tr>
+        <td>Calçados</td>
+        <td><input type="number"  name="calcados_jan" step="0.01"></td>
+        <td><input type="number"  name="calcados_fev" step="0.01"></td>
+        <td><input type="number"  name="calcados_mar" step="0.01"></td>
+        <td><input type="number"  name="calcados_abr" step="0.01"></td>
+        <td><input type="number"  name="calcados_mai" step="0.01"></td>
+        <td><input type="number"  name="calcados_jun" step="0.01"></td>
+        <td><input type="number"  name="calcados_jul" step="0.01"></td>
+        <td><input type="number"  name="calcados_ago" step="0.01"></td>
+        <td><input type="number"  name="calcados_set" step="0.01"></td>
+        <td><input type="number"  name="calcados_out" step="0.01"></td>
+        <td><input type="number"  name="calcados_nov" step="0.01"></td>
+        <td><input type="number"  name="calcados_dez" step="0.01"></td>
+    </tr>
+    <tr>
+        <td>Restaurantes/Bares</td>
+        <td><input type="number"  name="restaurantes_bares_jan" step="0.01"></td>
+        <td><input type="number"  name="restaurantes_bares_fev" step="0.01"></td>
+        <td><input type="number"  name="restaurantes_bares_mar" step="0.01"></td>
+        <td><input type="number"  name="restaurantes_bares_abr" step="0.01"></td>
+        <td><input type="number"  name="restaurantes_bares_mai" step="0.01"></td>
+        <td><input type="number"  name="restaurantes_bares_jun" step="0.01"></td>
+        <td><input type="number"  name="restaurantes_bares_jul" step="0.01"></td>
+        <td><input type="number"  name="restaurantes_bares_ago" step="0.01"></td>
+        <td><input type="number"  name="restaurantes_bares_set" step="0.01"></td>
+        <td><input type="number"  name="restaurantes_bares_out" step="0.01"></td>
+        <td><input type="number"  name="restaurantes_bares_nov" step="0.01"></td>
+        <td><input type="number"  name="restaurantes_bares_dez" step="0.01"></td>
+    </tr>
+    <tr>
+        <td>Presentes</td>
+        <td><input type="number"  name="presentes_jan" step="0.01"></td>
+        <td><input type="number"  name="presentes_fev" step="0.01"></td>
+        <td><input type="number"  name="presentes_mar" step="0.01"></td>
+        <td><input type="number"  name="presentes_abr" step="0.01"></td>
+        <td><input type="number"  name="presentes_mai" step="0.01"></td>
+        <td><input type="number"  name="presentes_jun" step="0.01"></td>
+        <td><input type="number"  name="presentes_jul" step="0.01"></td>
+        <td><input type="number"  name="presentes_ago" step="0.01"></td>
+        <td><input type="number"  name="presentes_set" step="0.01"></td>
+        <td><input type="number"  name="presentes_out" step="0.01"></td>
+        <td><input type="number"  name="presentes_nov" step="0.01"></td>
+        <td><input type="number"  name="presentes_dez" step="0.01"></td>
+    </tr>
+    <tr>
+        <td>Acessórios</td>
+        <td><input type="number"  name="acessorios_jan" step="0.01"></td>
+        <td><input type="number"  name="acessorios_fev" step="0.01"></td>
+        <td><input type="number"  name="acessorios_mar" step="0.01"></td>
+        <td><input type="number"  name="acessorios_abr" step="0.01"></td>
+        <td><input type="number"  name="acessorios_mai" step="0.01"></td>
+        <td><input type="number"  name="acessorios_jun" step="0.01"></td>
+        <td><input type="number"  name="acessorios_jul" step="0.01"></td>
+        <td><input type="number"  name="acessorios_ago" step="0.01"></td>
+        <td><input type="number"  name="acessorios_set" step="0.01"></td>
+        <td><input type="number"  name="acessorios_out" step="0.01"></td>
+        <td><input type="number"   name="acessorios_nov" step="0.01"></td>
+        <td><input type="number"   name="acessorios_dez" step="0.01"></td>
+    </tr>
+    <tr>
+        <td>Outros</td>
+        <td><input type="number"  name="outros_jan" step="0.01"></td>
+        <td><input type="number"  name="outros_fev" step="0.01"></td>
+        <td><input type="number"  name="outros_mar" step="0.01"></td>
+        <td><input type="number"  name="outros_abr" step="0.01"></td>
+        <td><input type="number"  name="outros_mai" step="0.01"></td>
+        <td><input type="number"  name="outros_jun" step="0.01"></td>
+        <td><input type="number"  name="outros_jul" step="0.01"></td>
+        <td><input type="number"  name="outros_ago" step="0.01"></td>
+        <td><input type="number"  name="outros_set" step="0.01"></td>
+        <td><input type="number"  name="outros_out" step="0.01"></td>
+        <td><input type="number"  name="outros_nov" step="0.01"></td>
+        <td><input type="number"  name="outros_dez" step="0.01"></td>
+    </tr>
+</table>
+
+
+    <div>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Item Parcelado</th>
+                    <th>Configuração</th>
+                    <th>Janeiro</th>
+                    <th>Fevereiro</th>
+                    <th>Março</th>
+                    <th>Abril</th>
+                    <th>Maio</th>
+                    <th>Junho</th>
+                    <th>Julho</th>
+                    <th>Agosto</th>
+                    <th>Setembro</th>
+                    <th>Outubro</th>
+                    <th>Novembro</th>
+                    <th>Dezembro</th>
+                </tr>
+            </thead>
+            <tbody id="parcelado-tbody">
+            </tbody>
+        </table>
+        <div style="text-align: center; margin-top: 10px;">
+            <button onclick="adicionarItem(event)">Adicionar Item Parcelado</button>
+        </div>
+        <!-- Botão para gerar o dashboard -->
+    </div>
+        <div class="center-button">
+            <button type="submit">Gerar Dashboard</button>
+        </div>
+    </form> 
+</div>
+
+
+       
+<script>
+    function adicionarItem(event) {
+        event.preventDefault(); // Impede o envio do formulário
+
+        const tbody = document.getElementById("parcelado-tbody");
+
+        // Criar uma nova linha
+        const tr = document.createElement("tr");
+
+        // Adicionar as células da linha
+        tr.innerHTML = `
+            <td><input type="text" name="item_nome" placeholder="Nome do Item"></td>
+            <td>
+                <input type="number" name="valor_total" step="0.01" placeholder="Valor Total" oninput="calcularParcelas(this)">
+                <input type="number" name="num_parcelas" placeholder="Parcelas" oninput="calcularParcelas(this)">
+                <br>
+                <span>Valor por parcela: <span class="valor-parcela-individual"></span></span>
+            </td>
+            <td><input type="number" readonly name="parcelado_jan"></td>
+            <td><input type="number" readonly name="parcelado_fev"></td>
+            <td><input type="number" readonly name="parcelado_mar"></td>
+            <td><input type="number" readonly name="parcelado_abr"></td>
+            <td><input type="number" readonly name="parcelado_mai"></td>
+            <td><input type="number" readonly name="parcelado_jun"></td>
+            <td><input type="number" readonly name="parcelado_jul"></td>
+            <td><input type="number" readonly name="parcelado_ago"></td>
+            <td><input type="number" readonly name="parcelado_set"></td>
+            <td><input type="number" readonly name="parcelado_out"></td>
+            <td><input type="number" readonly name="parcelado_nov"></td>
+            <td><input type="number" readonly name="parcelado_dez"></td>
+        `;
+
+        // Adicionar a nova linha na tabela
+        tbody.appendChild(tr);
+    }
+
+    function calcularParcelas(inputElement) {
+        const tr = inputElement.closest("tr"); // Pegar a linha atual
+        const valorTotal = parseFloat(tr.querySelector('input[name="valor_total"]').value);
+        const numParcelas = parseInt(tr.querySelector('input[name="num_parcelas"]').value);
+
+        // Verificar se os valores são válidos
+        if (!isNaN(valorTotal) && !isNaN(numParcelas) && numParcelas > 0) {
+            const valorParcela = valorTotal / numParcelas;
+
+            // Exibir o valor por parcela
+            tr.querySelector(".valor-parcela-individual").textContent = valorParcela.toFixed(2);
+
+            // Preencher os campos de parcelas para os meses
+            const meses = [
+                "parcelado_jan", "parcelado_fev", "parcelado_mar", "parcelado_abr",
+                "parcelado_mai", "parcelado_jun", "parcelado_jul", "parcelado_ago",
+                "parcelado_set", "parcelado_out", "parcelado_nov", "parcelado_dez"
+            ];
+
+            for (let i = 0; i < numParcelas; i++) {
+                const mesInput = tr.querySelector(`input[name="${meses[i]}"]`);
+                if (mesInput) {
+                    mesInput.value = valorParcela.toFixed(2);
+                }
+            }
+        } else {
+            // Limpar os campos se os valores forem inválidos
+            tr.querySelector(".valor-parcela-individual").textContent = "";
+            const parcelas = tr.querySelectorAll('input[readonly]');
+            parcelas.forEach(input => input.value = "");
+        }
+    }
+</script>   
+
+<footer class="footer bg-dark text-white" style="position: relative;">
+    <div class="container">
+      <div class="row mt-3">
+        <div class="col text-center">
+          <p>&copy; Copyright ©2024 Todos os direitos reservados | by Ämanda Guimarães | Mateus Mussi | Clarice Antezana</p>
+        </div>
+      </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
